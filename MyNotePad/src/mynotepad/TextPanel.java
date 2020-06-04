@@ -51,6 +51,7 @@ public class TextPanel extends javax.swing.JFrame {
         currentFile = null;
         isSaved = false;
         System.out.println("Heelllok");
+        System.out.println("ok");
     }
 
     /**
