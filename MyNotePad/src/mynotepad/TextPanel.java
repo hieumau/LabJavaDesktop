@@ -50,6 +50,7 @@ public class TextPanel extends javax.swing.JFrame {
         this.setTitle("Untitled - Notepad");
         currentFile = null;
         isSaved = false;
+        System.out.println("Heelllok");
     }
 
     /**
