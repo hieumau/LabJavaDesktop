@@ -90,3 +90,5 @@ dist/
 nbdist/
 .nb-gradle/
 
+NotePad/target/generated-sources/
+NotePad/target/test-classes/

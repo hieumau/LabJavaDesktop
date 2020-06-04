@@ -21,6 +21,7 @@ public class FindDialog extends java.awt.Dialog {
         super(parent, modal);
         initComponents();
         textPanel = (TextPanel)this.getParent();
+        System.out.println("hello");
     }
 
     /**
