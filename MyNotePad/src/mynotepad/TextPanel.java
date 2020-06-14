@@ -5,7 +5,7 @@
  */
 package mynotepad;
 
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -544,7 +544,8 @@ public class TextPanel extends javax.swing.JFrame {
 
     private void mnChangeFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnChangeFontActionPerformed
         // TODO add your handling code here:
-          
+          ChangeFontDialog changeFontDialog = new ChangeFontDialog(this, false);
+          changeFontDialog.setVisible(true);
         
     }//GEN-LAST:event_mnChangeFontActionPerformed
     public void saveFile(File f){
@@ -832,7 +833,11 @@ public class TextPanel extends javax.swing.JFrame {
         }
        
     }
-    
+
+    public void setTextFont(Font font){
+        if (font != null)
+        txt.setFont(font);
+    }
     /**
      * @param args the command line arguments
      */
