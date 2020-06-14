@@ -441,6 +441,7 @@ public class TextPanel extends javax.swing.JFrame {
     private void mnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnSaveActionPerformed
         // TODO add your handling code here:
         saveFile();
+        if(currentFile != null)
         this.setTitle(currentFile.getAbsolutePath() + " - Notepad");
     }//GEN-LAST:event_mnSaveActionPerformed
     
@@ -461,27 +462,16 @@ public class TextPanel extends javax.swing.JFrame {
         int choice = fc.showSaveDialog(null);
         if(choice == JFileChooser.APPROVE_OPTION){
             File f = fc.getSelectedFile();
-            if (f.exists()){
-                int ans = JOptionPane.showConfirmDialog(null, currentFile.getName() + " already exists.\nDo you want to replace it?", "Confirm Save As", JOptionPane.YES_NO_OPTION);
+            if (f.exists() && currentFile != null){
+                int ans = JOptionPane.showConfirmDialog(null, f.getName() + " already exists.\nDo you want to replace it?", "Confirm Save As", JOptionPane.YES_NO_OPTION);
                 if (ans == JOptionPane.YES_OPTION){
-                    saveFile(currentFile); 
-                    this.setTitle(currentFile.getAbsolutePath() + " - Notepad");
+                    saveFile(f);
+                    this.setTitle(f.getAbsolutePath() + " - Notepad");
                     return true;
                 } else {
                     mnSaveAsActionPerformed(null);
                 }
             }
-//            if (f.equals(currentFile)){
-//                System.out.println("same");
-//                int ans = JOptionPane.showConfirmDialog(null, currentFile.getName() + " already exists.\nDo you want to replace it?", "Confirm Save As", JOptionPane.YES_NO_OPTION);
-//                if (ans == JOptionPane.YES_OPTION){
-//                    saveFile(currentFile); 
-//                    this.setTitle(currentFile.getAbsolutePath() + " - Notepad");
-//                    return true;
-//                } else {
-//                    mnSaveAsActionPerformed(null);
-//                }
-//            } 
             else {
                 currentFile = f;
                 saveFile(f); 
