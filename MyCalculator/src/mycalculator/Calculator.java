@@ -26,6 +26,7 @@ public class Calculator extends javax.swing.JFrame {
     public Calculator() {
         initComponents();
         loadScreen();
+        secondScreen.setVisible(false);
     }
 
     /**
@@ -661,13 +662,15 @@ public class Calculator extends javax.swing.JFrame {
         switch (key){
             case "mc":
                 storage = "0";
-                buffer = "";
+//                buffer = "";
                 break;
             case "mr":
                 if (isResultButtomJustPressed){
                     clearAll();
                     mainText = storage;
+                    buffer = storage;
                     loadMainScreen();
+                    isResultButtomJustPressed = false;
                 } else {
                     mainText = storage;
                     buffer = storage;
@@ -676,14 +679,10 @@ public class Calculator extends javax.swing.JFrame {
                 isMemoryReadButtomJustPressed = true;
                 break;
             case "m+":
-                System.out.println("oke");
                 storage = formatDouble(Double.parseDouble(storage) + Double.parseDouble(mainScreen.getText()));
-                buffer = "";
                 break;
             case "m-":
                 storage = formatDouble(Double.parseDouble(storage) - Double.parseDouble(mainScreen.getText()));
-                buffer = "";
-
                 break;
         }
         loadLogScreen();

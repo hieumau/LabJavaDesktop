@@ -25,6 +25,7 @@ import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.Document;
 import javax.swing.undo.CannotRedoException;
@@ -50,8 +51,6 @@ public class TextPanel extends javax.swing.JFrame {
         this.setTitle("Untitled - Notepad");
         currentFile = null;
         isSaved = false;
-        System.out.println("Heelllok");
-        System.out.println(" not ok");
     }
 
     /**
@@ -457,30 +456,33 @@ public class TextPanel extends javax.swing.JFrame {
         return false;
     }
     private boolean saveAsFile(){
-        JFileChooser fc = new JFileChooser();
-        
-        int choice = fc.showSaveDialog(null);
-        if(choice == JFileChooser.APPROVE_OPTION){
+                
+        JFileChooser fc = new JFileChooser("Save");
+        fc.setDialogTitle("Save as");
+        fc.setApproveButtonText("Save");
+        int choice;
+        choice = fc.showOpenDialog(null);
+        if(choice == JFileChooser.APPROVE_OPTION) {
             File f = fc.getSelectedFile();
-            if (f.exists() && currentFile != null){
-                int ans = JOptionPane.showConfirmDialog(null, f.getName() + " already exists.\nDo you want to replace it?", "Confirm Save As", JOptionPane.YES_NO_OPTION);
+            if (f.exists()) {
+                int ans = JOptionPane.showConfirmDialog(null, "This file is exist. Do you want to replace", "Notepad", JOptionPane.YES_NO_CANCEL_OPTION);
                 if (ans == JOptionPane.YES_OPTION){
+                    currentFile = f;
+                    this.setTitle(currentFile.getAbsolutePath() + " - Notepad");
                     saveFile(f);
-                    this.setTitle(f.getAbsolutePath() + " - Notepad");
                     return true;
-                } else {
-                    mnSaveAsActionPerformed(null);
                 }
-            }
-            else {
+            } else {
                 currentFile = f;
-                saveFile(f); 
                 this.setTitle(currentFile.getAbsolutePath() + " - Notepad");
+                saveFile(f);
                 return true;
-            } 
+            }
         }
+
         return false;
     }
+
     private void mnSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnSaveAsActionPerformed
         // TODO add your handling code here:
         saveAsFile();
@@ -835,8 +837,11 @@ public class TextPanel extends javax.swing.JFrame {
     }
 
     public void setTextFont(Font font){
-        if (font != null)
-        txt.setFont(font);
+
+        if (font != null){
+            txt.setFont(font);
+            txt.getLineWrap();
+        }
     }
     /**
      * @param args the command line arguments
