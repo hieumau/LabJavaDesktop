@@ -5,8 +5,7 @@
  */
 package numberpuzzlegame;
 
-import de.alpharogroup.check.Check;
-import de.alpharogroup.test.objects.A;
+
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -31,50 +30,91 @@ public class NumberPuzzleGame extends javax.swing.JFrame {
     JComboBox cbLevel = new JComboBox();
     numberpuzzlegame.NumberPanel numberPanel;
     int time;
+    int level = 3;
     boolean isStartPlayed = false;
 //    cbLevel.setPreferredSize(new Dimension(50, 30));
     JButton btnNewGame = new JButton("New Game");
     public NumberPuzzleGame() {
         initComponents();
         loadGame();
-
+    }
+    public NumberPuzzleGame(int level) {
+        initComponents();
+        this.level = level;
+        loadGame();
     }
     public void loadGame(){
         int baseSize = 100;
-        int level = 3;
-        numberPanel = new numberpuzzlegame.NumberPanel(level);
+        
 
+        //load level to combobox
+        cbLevel.addItem("3x3");
+        cbLevel.addItem("4x4");
+        numberPanel = new numberpuzzlegame.NumberPanel(level);
         JPanel panel = (JPanel) this.getContentPane();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+//        panel.setLayout(new GridLayout(0, 1));
         this.setSize(baseSize * (level + 1), baseSize * (level + 2));
-        this.setResizable(false);
+        this.setResizable(true);
         
-        panel.add(numberPanel);
-        numberPanel.setPreferredSize(new java.awt.Dimension(getSize().width - 50, getSize().width - 50));
-        numberPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        
 
         panel.add(moveCountLabel);
         panel.add(countDownLabel);
         panel.add(levelLable);
         panel.add(cbLevel);
         panel.add(btnNewGame);
+        
+        panel.add(numberPanel);
+        numberPanel.setPreferredSize(new java.awt.Dimension(getSize().width - 50, getSize().width - 50));
+        numberPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        numberPanel.creatNewGame();
+
         CountTimeThread countTimeThread = new CountTimeThread();
         countTimeThread.start();
         CheckGameStatusThread checkGameStatusThread = new CheckGameStatusThread();
         checkGameStatusThread.start();
+        
+        
+        
+                
+        //add event to new game button
         btnNewGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int level;
+                if (cbLevel.getSelectedIndex() == 0) {
+                    level = 3;
+                } else {
+                    level = 4;
+                }
+                remove(numberPanel);
+                
+//                numberPanel = null;
+                numberPanel = new numberpuzzlegame.NumberPanel(level);
+                panel.add(numberPanel);
+                numberPanel.setPreferredSize(new java.awt.Dimension(getSize().width - 50, getSize().width - 50));
+                numberPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+                
+                // load randome
                 numberPanel.creatNewGame();
                 time = 0;
                 countDownLabel.setText("Elapsed: " + time + " sec");
                 isStartPlayed = true;
+                
+                
+//                NumberPuzzleGame numberPuzzleGame = new NumberPuzzleGame(level);
+//                numberPuzzleGame.setVisible(true);
+//                dispose();
             }
 
         });
+
+
+
     }
 
-
+    
     class CountTimeThread extends Thread {
         @Override
         public void run() {

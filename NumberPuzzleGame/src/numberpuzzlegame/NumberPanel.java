@@ -104,7 +104,7 @@ public class NumberPanel extends JPanel {
         }
 
         // Random new game
-        for (int i = 0; i < level * 1; i++){
+        for (int i = 0; i < level * 100; i++){
             numPad = getNumPadByCurrentValue(0);
             column = numPad.getColumn();
             row = numPad.getRow();

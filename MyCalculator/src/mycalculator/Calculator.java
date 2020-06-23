@@ -570,7 +570,12 @@ public class Calculator extends javax.swing.JFrame {
             buffer = "";
             mainText = memory;
             loadScreen();
-        }else if (!isMemoryEmpty() && isOperatorEmpty() && isBufferEmpty()){
+        } else if (!isMemoryEmpty() && isOperatorEmpty() && !isBufferEmpty()) {
+            memory = buffer;
+            buffer = "";
+            mainText = memory;
+            loadScreen();
+        } else if (!isMemoryEmpty() && isOperatorEmpty() && isBufferEmpty()){
             loadScreen();
         } else if (isBufferEmpty() && !isOperatorEmpty()){
             buffer = memory;
@@ -599,7 +604,10 @@ public class Calculator extends javax.swing.JFrame {
                 memory = buffer;
                 loadScreen();
 
-            } else if (!isBufferEmpty() && !isOperatorEmpty()){
+            } else if (!isMemoryEmpty() && isOperatorEmpty() && !isBufferEmpty()){
+                memory = buffer;
+                buffer = "";
+            } else if (!isMemoryEmpty() && !isBufferEmpty() && !isOperatorEmpty()){
                 memory = calculateExpression(memory, buffer, operator);
                 mainText = memory;
             }
@@ -638,6 +646,10 @@ public class Calculator extends javax.swing.JFrame {
         if (isResultButtomJustPressed){
             memory = calculateSingleExpression(mainText, key);
             mainText = memory;
+        }else if (!isMemoryEmpty() && !isBufferEmpty() && isOperatorEmpty()){
+            memory = calculateSingleExpression(buffer, key);
+            mainText = memory;
+            buffer = "";
         } else if (isMemoryEmpty()){
             memory = calculateSingleExpression(buffer, key);
             mainText = memory;
