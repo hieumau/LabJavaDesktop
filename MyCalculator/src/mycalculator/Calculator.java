@@ -535,15 +535,23 @@ public class Calculator extends javax.swing.JFrame {
         if (isResultButtomJustPressed){
             clearAll();
         }
-
-        if (buffer.length() < 18) {
-            if(buffer.equals("0") || isMemoryReadButtomJustPressed){
-                buffer = key;
-            } else {
-                buffer = buffer + key;
-            }
-            mainText = buffer;
+        if (!isMemoryEmpty() && isOperatorEmpty()){
+            memory = "";
         }
+        if (buffer.equals("0") || isMemoryReadButtomJustPressed){
+            buffer = key;
+        } else if (buffer.length() < 18){
+            buffer = buffer + key;
+        }
+        mainText = buffer;
+//        if (buffer.length() < 18) {
+//            if(buffer.equals("0") || isMemoryReadButtomJustPressed){
+//                buffer = key;
+//            } else {
+//                buffer = buffer + key;
+//            }
+//            mainText = buffer;
+//        }
         loadMainScreen();
         loadLogScreen();
         isResultButtomJustPressed = false;
@@ -552,6 +560,7 @@ public class Calculator extends javax.swing.JFrame {
     }
 
     private void pressOperatorButton(String key){
+        deleteLastDotInBuffer();
         if (key.equals("+") ||
                 key.equals("-") ||
                 key.equals("*") ||
@@ -598,9 +607,13 @@ public class Calculator extends javax.swing.JFrame {
     }
 
     private void calculateBasicOperator(String key){
+        deleteLastDotInBuffer();
         Double result = new Double(0);
         if (!isResultButtomJustPressed){
             if (isMemoryEmpty()){
+                if (isBufferEmpty()){
+                    buffer = "0";
+                }
                 memory = buffer;
                 loadScreen();
 
@@ -643,6 +656,7 @@ public class Calculator extends javax.swing.JFrame {
         return formatDouble(result);
     }
     private void pressSingleOperatorButton(String key){
+        deleteLastDotInBuffer();
         if (isResultButtomJustPressed){
             memory = calculateSingleExpression(mainText, key);
             mainText = memory;
@@ -671,6 +685,7 @@ public class Calculator extends javax.swing.JFrame {
         loadLogScreen();
     }
     private void pressMemoryButton(String key){
+        deleteLastDotInBuffer();
         switch (key){
             case "mc":
                 storage = "0";
@@ -772,13 +787,7 @@ public class Calculator extends javax.swing.JFrame {
         System.out.println("mainText = " + mainScreen.getText());
         System.out.println("--------------");
     }
-    private void pushStack(String value){
-        if (isMemoryEmpty()){
-            memory = value;
-        } else if (isBufferEmpty()){
-            buffer = value;
-        }
-    }
+
     //cut all the zero number in the end of double
     public static String formatDouble(double d)
     {
@@ -799,11 +808,33 @@ public class Calculator extends javax.swing.JFrame {
 
     private void btnDotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDotActionPerformed
         // TODO add your handling code here:
+        if (isResultButtomJustPressed){
+            clearAll();
+        }
+//
+//        if (buffer.length() < 18) {
+//            if(buffer.equals("0") || isMemoryReadButtomJustPressed){
+//                buffer = key;
+//            } else {
+//                buffer = buffer + key;
+//            }
+//            mainText = buffer;
+//        }
+
+        if (isMemoryReadButtomJustPressed){
+            buffer = "0";
+        }
         if (buffer.indexOf(".") < 0){
+            if (isBufferEmpty() ){
+                buffer = "0";
+            }
             buffer = buffer + ".";
             mainText = buffer;
         }
+        loadLogScreen();
         loadMainScreen();
+        isResultButtomJustPressed = false;
+        isMemoryReadButtomJustPressed = false;
     }//GEN-LAST:event_btnDotActionPerformed
 
     private void btnClearBufferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearBufferActionPerformed
@@ -896,7 +927,16 @@ public class Calculator extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-
+    private void deleteLastDotInBuffer(){
+        if (!isBufferEmpty()){
+            if (buffer.indexOf(".") == buffer.length() - 1){
+                buffer = buffer.substring(0, buffer.length() - 1);
+                mainText = buffer;
+                loadScreen();
+            }
+        }
+//        System.out.println("After deleted: " + buffer);
+    }
     private void clearAll(){
         mainText = "0";
         secondText = "";

@@ -65,12 +65,14 @@ public class NumberPanel extends JPanel {
                             moveCount ++;
                         }
                     }
+
                     if (leftNumPad != null){
                         if (leftNumPad.getCurrentValue() == 0){
                             swapNumPadCurrentValue(numPad, leftNumPad);
                             moveCount ++;
                         }
                     }
+
                     if (rightNumPad != null){
                         if (rightNumPad.getCurrentValue() == 0){
                             swapNumPadCurrentValue(numPad, rightNumPad);
@@ -79,8 +81,9 @@ public class NumberPanel extends JPanel {
                     }
 
                     if (isWin()){
-                        JOptionPane.showMessageDialog(null, "You win");
+                        JOptionPane.showMessageDialog(null, "You win!");
                     }
+
                 }
             });
         }
